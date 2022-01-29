@@ -6,17 +6,15 @@ export default function InterviewerList(props) {
   const interviewers = [];
   for (let interviewer of props.interviewers) {
     interviewers.push(
-      <li>
         <InterviewerListItem
+          key={interviewer.id}
           selected={interviewer.id === props.value}
           setInterviewer={() => {
             props.onChange(interviewer.id);
           }}
-          id={interviewer.id}
           name={interviewer.name}
           avatar={interviewer.avatar}
         ></InterviewerListItem>
-      </li>
     );
   }
 
