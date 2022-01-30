@@ -29,9 +29,8 @@ export default function Appointment(props) {
     try {
       props.cancelInterview(props.id)
       transition(EMPTY)
-    } catch (err) {
+    } catch {
       transition(ERROR_DELETE, true)
-      throw err;
     }
    }
 
@@ -46,9 +45,8 @@ export default function Appointment(props) {
     try {
       props.bookInterview(props.id, interview)
       transition(SHOW)
-    } catch (err) {
+    } catch {
       transition(ERROR_SAVE, true)
-      throw err;
     }
   }
 

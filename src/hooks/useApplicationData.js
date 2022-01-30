@@ -16,13 +16,11 @@ export default function useApplicationData() {
         let counter = deleteMode
           ? stateDay.appointments.length
           : stateDay.appointments.length - 1;
-        console.log("original counter:", counter);
         for (let appointment of stateDay.appointments) {
           if (state.appointments[appointment].interview) {
             counter -= 1;
           }
         }
-        console.log("end counter", counter);
         stateDay.spots = counter;
       }
     }
