@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "components/Application.scss";
-import DayList from "./DayList";
-import Appointment from "./Appointment";
 import axios from "axios";
-import {
-  getAppointmentsForDay,
-  getInterview,
-  getInterviewersForDay,
-} from "helpers/selectors";
 
-export default function Application(props) {
+export default function useApplicationData() {
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -22,12 +16,10 @@ export default function Application(props) {
       ...state.appointments[id],
       interview: { ...interview },
     };
-
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
-
     setState({ ...state, appointments });
   }
 
@@ -55,44 +47,5 @@ export default function Application(props) {
     });
   }, []);
 
-  return (
-    <main className="layout">
-      <section className="sidebar">
-        <img
-          className="sidebar--centered"
-          src="images/logo.png"
-          alt="Interview Scheduler"
-        />
-        <hr className="sidebar__separator sidebar--centered" />
-        <nav className="sidebar__menu">
-          <DayList
-            days={state.days}
-            value={state.day}
-            onChange={(day) => {
-              setState({ ...state, day: day });
-            }}
-          />
-        </nav>
-        <img
-          className="sidebar__lhl sidebar--centered"
-          src="images/lhl.png"
-          alt="Lighthouse Labs"
-        />
-      </section>
-      <section className="schedule">
-        {getAppointmentsForDay(state, state.day).map((appointment) => {
-          return (
-            <Appointment
-              bookInterview={bookInterview}
-              interviewers={getInterviewersForDay(state, state.day)}
-              key={appointment.id}
-              {...appointment} // unpack all values
-              interview={getInterview(state, appointment.interview)}
-              onDelete={cancelInterview}
-            />
-          );
-        })}
-      </section>
-    </main>
-  );
+  return { state, setDay: (day) => setState({...state, day}), bookInterview, cancelInterview };
 }
