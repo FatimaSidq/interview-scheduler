@@ -3,13 +3,30 @@ import "components/Application.scss";
 import axios from "axios";
 
 export default function useApplicationData() {
-
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
     interviewers: {},
   });
+
+  function updateSpots(deleteMode = false) {
+    for (let stateDay of state.days) {
+      if (stateDay.name === state.day) {
+        let counter = deleteMode
+          ? stateDay.appointments.length
+          : stateDay.appointments.length - 1;
+        console.log("original counter:", counter);
+        for (let appointment of stateDay.appointments) {
+          if (state.appointments[appointment].interview) {
+            counter -= 1;
+          }
+        }
+        console.log("end counter", counter);
+        stateDay.spots = counter;
+      }
+    }
+  }
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -21,12 +38,19 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     setState({ ...state, appointments });
+    updateSpots();
   }
 
   function cancelInterview(id) {
     for (let appointment of Object.values(state.appointments)) {
       if (appointment.id === id) {
         appointment.interview = null;
+        const appointments = {
+          ...state.appointments,
+          [id]: appointment,
+        };
+        setState({ ...state, appointments });
+        updateSpots(true);
         return;
       }
     }
@@ -47,5 +71,10 @@ export default function useApplicationData() {
     });
   }, []);
 
-  return { state, setDay: (day) => setState({...state, day}), bookInterview, cancelInterview };
+  return {
+    state,
+    setDay: (day) => setState({ ...state, day }),
+    bookInterview,
+    cancelInterview,
+  };
 }
