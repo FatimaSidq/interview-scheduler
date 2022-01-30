@@ -137,20 +137,47 @@ storiesOf("InterviewerList", module)
     />
   ));
 
-  storiesOf("Appointment", module)
+storiesOf("Appointment", module)
   .addParameters({
-    backgrounds: [{ name: "white", value: "#fff", default: true }]
+    backgrounds: [{ name: "white", value: "#fff", default: true }],
   })
   .add("Appointment", () => <Appointment />)
   .add("Appointment with Time", () => <Appointment time="12pm" />)
   .add("Header", () => <Header time="12pm"></Header>)
   .add("Empty", () => <Empty onAdd={action("onAdd")}></Empty>)
-  .add("Show", () => <Show onEdit={action("onEdit")} onDelete={action("onDelete")}></Show>)
-  .add("Confirm", () => <Confirm onCancel={action("onCancel")} onConfirm={action("onConfirm")} message="Delete the appointment"></Confirm>)
+  .add("Show", () => (
+    <Show onEdit={action("onEdit")} onDelete={action("onDelete")}></Show>
+  ))
+  .add("Confirm", () => (
+    <Confirm
+      onCancel={action("onCancel")}
+      onConfirm={action("onConfirm")}
+      message="Delete the appointment"
+    ></Confirm>
+  ))
   .add("Status", () => <Status message="Deleting"></Status>)
-  .add("Error", () => <Error message="Could not delete appointment" onClose={action("onClose")}></Error>)
-  .add("Create", () => <Form onCancel={action("onCancel")} onSave={action("onSave")} interviewers={interviewers}></Form>)
-  .add("Edit", () => <Form onCancel={action("onCancel")} onSave={action("onSave")} interviewers={interviewers} interviewer={1} student="Fatima Siddique"></Form>)
+  .add("Error", () => (
+    <Error
+      message="Could not delete appointment"
+      onClose={action("onClose")}
+    ></Error>
+  ))
+  .add("Create", () => (
+    <Form
+      onCancel={action("onCancel")}
+      onSave={action("onSave")}
+      interviewers={interviewers}
+    ></Form>
+  ))
+  .add("Edit", () => (
+    <Form
+      onCancel={action("onCancel")}
+      onSave={action("onSave")}
+      interviewers={interviewers}
+      interviewer={1}
+      student="Fatima Siddique"
+    ></Form>
+  ))
   .add("Appointment Empty", () => (
     <Fragment>
       <Appointment id={1} time="4pm" />
@@ -166,6 +193,4 @@ storiesOf("InterviewerList", module)
       />
       <Appointment time="5pm" />
     </Fragment>
-  ))
-  
-  
+  ));

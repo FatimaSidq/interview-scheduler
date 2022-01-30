@@ -35,6 +35,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
+    axios.put(`/api/appointments/${id}`, { interview });
     setState({ ...state, appointments });
     updateSpots();
   }
@@ -47,6 +48,7 @@ export default function useApplicationData() {
           ...state.appointments,
           [id]: appointment,
         };
+        axios.delete(`/api/appointments/${id}`);
         setState({ ...state, appointments });
         updateSpots(true);
         return;

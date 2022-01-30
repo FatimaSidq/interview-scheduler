@@ -27,26 +27,26 @@ export default function Appointment(props) {
   function destroy(event) {
     transition(DELETE, true);
     try {
-      props.cancelInterview(props.id)
-      transition(EMPTY)
+      props.cancelInterview(props.id);
+      transition(EMPTY);
     } catch {
-      transition(ERROR_DELETE, true)
+      transition(ERROR_DELETE, true);
     }
-   }
+  }
 
   function save(name, interviewer) {
     const interview = {
       student: name,
-      interviewer
+      interviewer,
     };
-  
+
     transition(SAVING);
-  
+
     try {
-      props.bookInterview(props.id, interview)
-      transition(SHOW)
+      props.bookInterview(props.id, interview);
+      transition(SHOW);
     } catch {
-      transition(ERROR_SAVE, true)
+      transition(ERROR_SAVE, true);
     }
   }
 
@@ -55,7 +55,9 @@ export default function Appointment(props) {
       <Header time={props.time}></Header>
       {mode === SAVING && <Status message="Saving" />}
       {mode === DELETE && <Status message="DELETE" />}
-      {mode === EMPTY && props.time !== "5pm" && <Empty onAdd={() => transition(CREATE)} />}
+      {mode === EMPTY && props.time !== "5pm" && (
+        <Empty onAdd={() => transition(CREATE)} />
+      )}
       {mode === SHOW && props.interview && (
         <Show
           student={props.interview.student}
@@ -94,13 +96,9 @@ export default function Appointment(props) {
         ></Confirm>
       )}
 
-      {mode === ERROR_SAVE && (
-        <Error message="Saving failed."/>
-      )}
-      
-      {mode === ERROR_DELETE && (
-        <Error message="Delete failed."/>
-      )}
+      {mode === ERROR_SAVE && <Error message="Saving failed." />}
+
+      {mode === ERROR_DELETE && <Error message="Delete failed." />}
     </>
   );
 }

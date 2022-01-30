@@ -4,21 +4,21 @@ export default function useVisualMode(initial) {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
-  function transition(next, replace=false) {
+  function transition(next, replace = false) {
     setMode(next);
-    const historyArray = [...history]
+    const historyArray = [...history];
     if (!replace) {
-      historyArray.push(next)
+      historyArray.push(next);
     }
-    setHistory(historyArray)
+    setHistory(historyArray);
   }
 
   function back() {
-    const historyArray = [...history]
+    const historyArray = [...history];
     if (historyArray.length > 1) {
-      historyArray.pop()
-      setMode(historyArray[historyArray.length - 1])
-      setHistory(historyArray)
+      historyArray.pop();
+      setMode(historyArray[historyArray.length - 1]);
+      setHistory(historyArray);
     }
   }
 
