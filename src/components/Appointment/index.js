@@ -2,6 +2,7 @@ import useVisualMode from "hooks/useVisualMode";
 import React from "react";
 import Confirm from "./Confirm";
 import Empty from "./Empty";
+import Error from "./Error";
 import Form from "./Form";
 import Header from "./Header";
 import Show from "./Show";
@@ -15,28 +16,46 @@ const SAVING = "SAVING";
 const DELETE = "DELETE";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
-  function destroy() {
-    transition(DELETE);
-    props.onDelete(props.id);
-    transition(EMPTY);
-  }
+  function destroy(event) {
+    transition(DELETE, true);
+    try {
+      props.onDelete(props.id)
+      transition(EMPTY)
+    } catch {
+      transition(ERROR_DELETE, true)
+    }
+   }
+   
+  // function destroy() {
+  //   transition(DELETE);
+  //   props.onDelete(props.id);
+  //   transition(EMPTY);
+  // }
 
   function save(name, interviewer) {
     const interview = {
       student: name,
-      interviewer,
+      interviewer
     };
-
+  
     transition(SAVING);
-    props.bookInterview(props.id, interview);
-    transition(SHOW);
+  
+    try {
+      props.bookInterview(props.id, interview)
+      transition(SHOW)
+    } catch {
+      transition(ERROR_SAVE, true)
+    }
   }
+  
 
   return (
     <>
@@ -80,6 +99,14 @@ export default function Appointment(props) {
           onConfirm={destroy}
           onCancel={back}
         ></Confirm>
+      )}
+
+      {mode === ERROR_SAVE && (
+        <Error message="Saving failed"/>
+      )}
+      
+      {mode === ERROR_DELETE && (
+        <Error message="Cancel failed"/>
       )}
     </>
   );
