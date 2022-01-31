@@ -1,5 +1,11 @@
 # Interview Scheduler
 
+## Screenshots
+![](docs/1.png)
+![](docs/2.png)
+![](docs/3.png)
+![](docs/4.png)
+
 ## Setup
 
 Install dependencies with `npm install`.
