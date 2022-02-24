@@ -35,9 +35,10 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment,
     };
-    axios.put(`/api/appointments/${id}`, { interview });
-    setState({ ...state, appointments });
-    updateSpots();
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+      setState({ ...state, appointments });
+      updateSpots();
+    });
   }
 
   function cancelInterview(id) {
@@ -48,10 +49,11 @@ export default function useApplicationData() {
           ...state.appointments,
           [id]: appointment,
         };
-        axios.delete(`/api/appointments/${id}`);
-        setState({ ...state, appointments });
-        updateSpots(true);
-        return;
+
+        return axios.delete(`/api/appointments/${id}`).then(() => {
+          setState({ ...state, appointments });
+          updateSpots(true);
+        });
       }
     }
   }

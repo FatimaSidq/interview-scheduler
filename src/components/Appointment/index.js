@@ -26,12 +26,14 @@ export default function Appointment(props) {
 
   function destroy(event) {
     transition(DELETE, true);
-    try {
-      props.cancelInterview(props.id);
-      transition(EMPTY);
-    } catch {
-      transition(ERROR_DELETE, true);
-    }
+    props
+      .cancelInterview(props.id)
+      .then(() => {
+        transition(EMPTY);
+      })
+      .catch((err) => {
+        transition(ERROR_DELETE, true);
+      });
   }
 
   function save(name, interviewer) {
@@ -42,12 +44,14 @@ export default function Appointment(props) {
 
     transition(SAVING);
 
-    try {
-      props.bookInterview(props.id, interview);
-      transition(SHOW);
-    } catch {
-      transition(ERROR_SAVE, true);
-    }
+    props
+      .bookInterview(props.id, interview)
+      .then(() => {
+        transition(SHOW);
+      })
+      .catch(() => {
+        transition(ERROR_SAVE, true);
+      });
   }
 
   return (
@@ -96,9 +100,19 @@ export default function Appointment(props) {
         ></Confirm>
       )}
 
-      {mode === ERROR_SAVE && <Error message="Saving failed." />}
+      {mode === ERROR_SAVE && (
+        <Error
+          message="Saving failed."
+          onClose={back}
+        />
+      )}
 
-      {mode === ERROR_DELETE && <Error message="Delete failed." />}
+      {mode === ERROR_DELETE && (
+        <Error
+          message="Delete failed."
+          onClose={back}
+        />
+      )}
     </>
   );
 }
