@@ -32,7 +32,7 @@ export default function Appointment(props) {
         transition(EMPTY);
       })
       .catch((err) => {
-        transition(ERROR_DELETE, true);
+        transition(ERROR_DELETE);
       });
   }
 
@@ -50,7 +50,7 @@ export default function Appointment(props) {
         transition(SHOW);
       })
       .catch(() => {
-        transition(ERROR_SAVE, true);
+        transition(ERROR_SAVE);
       });
   }
 
@@ -67,7 +67,7 @@ export default function Appointment(props) {
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           onDelete={() => {
-            transition(CONFIRM);
+            transition(CONFIRM, true);
           }}
           onEdit={() => {
             transition(EDIT);

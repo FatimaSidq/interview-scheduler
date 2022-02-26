@@ -11,17 +11,20 @@ export default function useApplicationData() {
   });
 
   function updateSpots(deleteMode = false) {
-    for (let stateDay of state.days) {
-      if (stateDay.name === state.day) {
+    const modifiedDays = state.days;
+    for (let i = 0; i < modifiedDays.length; i++) {
+      if (modifiedDays[i].name === state.day) {
         let counter = deleteMode
-          ? stateDay.appointments.length
-          : stateDay.appointments.length - 1;
-        for (let appointment of stateDay.appointments) {
+          ? modifiedDays[i].appointments.length
+          : modifiedDays[i].appointments.length - 1;
+        for (let appointment of modifiedDays[i].appointments) {
           if (state.appointments[appointment].interview) {
             counter -= 1;
           }
         }
-        stateDay.spots = counter;
+
+        modifiedDays[i].spots = counter;
+        setState({ ...state, days: modifiedDays });
       }
     }
   }
@@ -36,8 +39,9 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
-      setState({ ...state, appointments });
-      updateSpots();
+      setState({ ...state, appointments }, () => {
+        updateSpots();
+      });
     });
   }
 
