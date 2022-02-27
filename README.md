@@ -32,7 +32,7 @@ npm run storybook
 
 `npm start`
 
-In a new terminal..
+# In a new terminal..
 
 Clone scheduler-api from `https://github.com/lighthouse-labs/scheduler-api`
 
