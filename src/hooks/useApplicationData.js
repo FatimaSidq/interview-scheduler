@@ -10,25 +10,6 @@ export default function useApplicationData() {
     interviewers: {},
   });
 
-  function updateSpots(deleteMode = false) {
-    const modifiedDays = state.days;
-    for (let i = 0; i < modifiedDays.length; i++) {
-      if (modifiedDays[i].name === state.day) {
-        let counter = deleteMode
-          ? modifiedDays[i].appointments.length
-          : modifiedDays[i].appointments.length - 1;
-        for (let appointment of modifiedDays[i].appointments) {
-          if (state.appointments[appointment].interview) {
-            counter -= 1;
-          }
-        }
-
-        modifiedDays[i].spots = counter;
-        setState({ ...state, days: modifiedDays });
-      }
-    }
-  }
-
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -39,9 +20,7 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
-      setState({ ...state, appointments }, () => {
-        updateSpots();
-      });
+      setState({ ...state, appointments });
     });
   }
 
@@ -56,7 +35,6 @@ export default function useApplicationData() {
 
         return axios.delete(`/api/appointments/${id}`).then(() => {
           setState({ ...state, appointments });
-          updateSpots(true);
         });
       }
     }
@@ -76,6 +54,24 @@ export default function useApplicationData() {
       }));
     });
   }, []);
+
+  useEffect(() => {
+    const modifiedDays = state.days;
+    for (let i = 0; i < modifiedDays.length; i++) {
+      if (modifiedDays[i].name === state.day) {
+        let counter = modifiedDays[i].appointments.length;
+
+        for (let appointment of modifiedDays[i].appointments) {
+          if (state.appointments[appointment].interview) {
+            counter -= 1;
+          }
+        }
+
+        modifiedDays[i].spots = counter;
+        setState(state => ({ ...state, days: modifiedDays }));
+      }
+    }
+  }, [state.appointments]);
 
   return {
     state,
