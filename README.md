@@ -27,3 +27,21 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## Run
+
+`npm start`
+
+In a new terminal..
+
+Clone scheduler-api from `https://github.com/lighthouse-labs/scheduler-api`
+
+`git clone https://github.com/lighthouse-labs/scheduler-api`
+
+`cd scheduler-api`
+
+`npm install`
+
+Follow the [readme](https://github.com/lighthouse-labs/scheduler-api/blob/master/README.md) instructions..
+
+`npm start`
